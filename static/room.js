@@ -46,7 +46,8 @@ async function roll(expr) {
     // return true;
 }
 
-function submit_roll() {
+function submit_roll(event) {
+    event.preventDefault();
     const expr = rollinput.value;
     roll(expr);
     return false;
