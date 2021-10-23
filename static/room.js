@@ -29,6 +29,13 @@ connection.on("RoomJoined", () => {
 
 connection.on("PublishRoll", (message) => {
     console.log("PublishRoll", message);
+
+    const result = JSON.parse(message);
+    const resultHTML =
+        `<span class="rollresult">${result.Total}</span>` +
+        `<span class="rollmod">: ${result.Modifier}</span>` +
+        `<span class="rolldescription">(${result.Rolls.join(", ")})</span>`;
+
     const li = document.createElement("li");
     li.textContent = "PublishRoll " + " " + message;
     rolllist.appendChild(li);
@@ -43,7 +50,6 @@ async function roll(expr) {
     catch(err) {
         console.error(err);
     }
-    // return true;
 }
 
 function submit_roll(event) {
