@@ -15,7 +15,6 @@ const connection = new signalR.HubConnectionBuilder()
 async function start_signalr() {
     try {
         await connection.start();
-        console.log("SignalR connected");
         await connection.invoke("JoinRoom", roomname);
     }
     catch(err) {
@@ -34,7 +33,8 @@ connection.on("PublishRoll", (message) => {
     rolllist.appendChild(li);
 });
 
-start_signalr();
+start_signalr()
+    .then(() => console.log("SignalR connected"));
 
 async function roll(expr) {
     try {
@@ -43,12 +43,10 @@ async function roll(expr) {
     catch(err) {
         console.error(err);
     }
-    // return true;
 }
 
-function submit_roll() {
+async function submit_roll() {
     const expr = rollinput.value;
-    roll(expr);
-    return false;
+    await roll(expr);
 }
 
