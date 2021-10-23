@@ -30,7 +30,7 @@ namespace RollDiceWithX.SignalR
             }
             
             var json = JsonSerializer.Serialize(rollResult);
-            await Clients.All.SendAsync("PublishRoll", json);
+            await Clients.Group(roomName).SendAsync("PublishRoll", json);
         }
     }
 }
