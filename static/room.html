@@ -5,7 +5,14 @@
         <title>Roll Dice With X</title>
     </head>
     <body>
-        Roll!
+        <form onsubmit="submit_roll()">
+            <input id="roll-input" name="roll-input" type="text"></input>
+            <input type="submit">Roll!</button>
+        </form>
+
+        <ul id="roll-list">
+        </ul>
+
         <script type="text/javascript" src="room.js"></script>
     </body>
 </html>
