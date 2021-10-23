@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RollDiceWithX.SignalR;
 
 public class Startup
 {
@@ -17,6 +18,7 @@ public class Startup
     public static void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
+        services.AddSignalR();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "RollDiceWithX", Version = "v1" });
@@ -44,6 +46,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHub<RoomHub>("/roomhub");
         });
     }
 }
