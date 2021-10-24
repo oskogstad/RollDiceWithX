@@ -6,9 +6,9 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico">
     </head>
     <body>
-        <form>
+        <form onsubmit="submit_roll(event);">
             <input id="roll-input" name="roll-input" type="text"/>
-            <input type="button" onclick="return submit_roll();" value="Roll!"/>
+            <input type="submit" value="Roll!"/>
             <label id="invalid-expression" hidden="true">Invalid expression! 😱</label>
         </form>
 

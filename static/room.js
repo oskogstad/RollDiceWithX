@@ -30,6 +30,7 @@ connection.on("PublishRoll", (message) => {
     console.log("PublishRoll", message);
 
     const result = JSON.parse(message);
+    console.log(result);
     const resultHTML =
         `<span class="rollresult">${result.Total}</span>` +
         `<span class="rollmod">: ${result.Modifier}</span>` +
