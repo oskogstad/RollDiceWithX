@@ -15,7 +15,6 @@ const connection = new signalR.HubConnectionBuilder()
 async function start_signalr() {
     try {
         await connection.start();
-        console.log("SignalR connected");
         await connection.invoke("JoinRoom", roomname);
     }
     catch(err) {
@@ -41,7 +40,14 @@ connection.on("PublishRoll", (message) => {
     rolllist.appendChild(li);
 });
 
-start_signalr();
+connection.on("InvalidExpression", () => {
+    const errorLabel = document.getElementById("invalid-expression");
+    errorLabel.hidden = false;
+    setTimeout(() => { errorLabel.hidden = true;}, 2000)
+});
+
+start_signalr()
+    .then(() => console.log("SignalR connected"));
 
 async function roll(expr) {
     try {
@@ -52,10 +58,15 @@ async function roll(expr) {
     }
 }
 
-function submit_roll(event) {
+function clear_input() {
+    rollinput.value = "";
+}
+
+async function submit_roll(event) {
     event.preventDefault();
     const expr = rollinput.value;
-    roll(expr);
+    await roll(expr);
+    clear_input();
     return false;
 }
 
