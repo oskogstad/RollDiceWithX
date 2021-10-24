@@ -1,10 +1,30 @@
 const path = window.location.pathname.split("/");
 const roomname = path[path.length - 1];
-const username = "tempuser";
+const nameinput = document.getElementById("nameinput");
 const rollinput = document.getElementById("roll-input");
 const rolllist = document.getElementById("roll-list");
 
 document.title = "Roll Dice With " + roomname;
+
+// Load username
+var username = null;
+if(window.localStorage) {
+    username = window.localStorage.getItem("username");
+}
+
+if(!username) {
+    username = "Default Danny";
+}
+
+nameinput.value = username;
+
+function name_update(event)
+{
+    username = event.target.value;
+    if(window.localStorage) {
+        window.localStorage.setItem("username", username);
+    }
+}
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/roomhub")

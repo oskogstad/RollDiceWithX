@@ -6,6 +6,9 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico">
     </head>
     <body>
+        <div>
+            <input id="nameinput" name="nameinput" type="text" oninput="name_update(event)"></input>
+        </div>
         <form onsubmit="submit_roll(event);">
             <input id="roll-input" name="roll-input" type="text"/>
             <input type="submit" value="Roll!"/>
