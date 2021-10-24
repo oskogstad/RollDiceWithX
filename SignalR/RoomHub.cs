@@ -15,22 +15,23 @@ namespace RollDiceWithX.SignalR
             await Clients.Caller.SendAsync("RoomJoined");
         }
         
-        public async Task Roll(string roomName, string userName, string expression)
+        public async Task Roll(string roomName, string username, string expression)
         {
+            var utcTimestamp = DateTime.UtcNow;
             DiceRoller.Result rollResult;
             try
             {
                 rollResult = DiceRoller.Roll(expression);
             }
-            catch (Exception e)
+            catch (DiceRollException de)
             {
-                Console.WriteLine(e);
-                await Clients.Caller.SendAsync("InvalidExpression");
+                Console.WriteLine(de);
+                await Clients.Caller
+                    .SendAsync("InvalidExpression", new { de.Expression, de.Offset, utcTimestamp});
                 return;
             }
             
-            var json = JsonSerializer.Serialize(rollResult);
-            await Clients.Group(roomName).SendAsync("PublishRoll", json);
+            await Clients.Group(roomName).SendAsync("PublishRoll", new { rollResult, username, utcTimestamp});
         }
     }
 }

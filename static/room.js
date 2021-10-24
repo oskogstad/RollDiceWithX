@@ -26,18 +26,18 @@ connection.on("RoomJoined", () => {
     console.log("Joined", roomname);
 });
 
-connection.on("PublishRoll", (message) => {
-    console.log("PublishRoll", message);
+connection.on("PublishRoll", (result) => {
+    console.log("PublishRoll", result);
 
-    const result = JSON.parse(message);
-    console.log(result);
     const resultHTML =
-        `<span class="rollresult">${result.Total}</span>` +
-        `<span class="rollmod">: ${result.Modifier}</span>` +
-        `<span class="rolldescription">(${result.Rolls.join(", ")})</span>`;
+        `<span class="username">Username: ${result.username}</span>` +
+        `<span class="timestamp">, UTC: ${result.utcTimestamp}</span>` +
+        `<span class="rollresult">, Total: ${result.rollResult.total}</span>` +
+        `<span class="rollmod">, Modifier: ${result.rollResult.modifier}</span>` +
+        `<span class="rolldescription">, Rolls: (${result.rollResult.rolls})</span>`;
 
     const li = document.createElement("li");
-    li.textContent = "PublishRoll " + " " + message;
+    li.innerHTML = resultHTML;
     rolllist.appendChild(li);
 });
 
