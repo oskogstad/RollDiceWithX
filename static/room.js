@@ -1,30 +1,11 @@
 const path = window.location.pathname.split("/");
+var username = null; // Will be set below
 const roomname = path[path.length - 1];
 const nameinput = document.getElementById("nameinput");
 const rollinput = document.getElementById("roll-input");
 const rolllist = document.getElementById("roll-list");
 
 document.title = "Roll Dice With " + roomname;
-
-// Load username
-var username = null;
-if(window.localStorage) {
-    username = window.localStorage.getItem("username");
-}
-
-if(!username) {
-    username = "Default Danny";
-}
-
-nameinput.value = username;
-
-function name_update(event)
-{
-    username = event.target.value;
-    if(window.localStorage) {
-        window.localStorage.setItem("username", username);
-    }
-}
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/roomhub")
@@ -67,9 +48,6 @@ connection.on("InvalidExpression", () => {
     setTimeout(() => { errorLabel.hidden = true;}, 2000)
 });
 
-start_signalr()
-    .then(() => console.log("SignalR connected"));
-
 async function roll(expr) {
     try {
         await connection.invoke("Roll", roomname, username, expr);
@@ -83,11 +61,31 @@ function clear_input() {
     rollinput.value = "";
 }
 
-async function submit_roll(event) {
+document.getElementById("rollform").addEventListener("submit", async (event) => {
     event.preventDefault();
     const expr = rollinput.value;
     await roll(expr);
     clear_input();
     return false;
+});
+
+/* Username */
+if(window.localStorage) {
+    username = window.localStorage.getItem("username");
 }
 
+if(!username) {
+    username = "Default Danny";
+}
+
+nameinput.value = username;
+
+nameinput.addEventListener("input", (event) => {
+    username = event.target.value;
+    if(window.localStorage) {
+        window.localStorage.setItem("username", username);
+    }
+});
+
+start_signalr()
+    .then(() => console.log("SignalR connected"));

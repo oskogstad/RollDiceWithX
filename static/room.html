@@ -7,9 +7,9 @@
     </head>
     <body>
         <div>
-            <input id="nameinput" name="nameinput" type="text" oninput="name_update(event)"></input>
+            <input id="nameinput" name="nameinput" type="text"></input>
         </div>
-        <form onsubmit="submit_roll(event);">
+        <form id="rollform">
             <input id="roll-input" name="roll-input" type="text"/>
             <input type="submit" value="Roll!"/>
             <label id="invalid-expression" hidden="true">Invalid expression! 😱</label>
