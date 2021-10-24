@@ -4,6 +4,14 @@ const username = "tempuser";
 const rollinput = document.getElementById("roll-input");
 const rolllist = document.getElementById("roll-list");
 
+rollinput.addEventListener("keypress", async (keyEvent) => {
+    const key = keyEvent.key;
+    if(key === "Enter") {
+        submit_roll();
+        keyEvent.preventDefault()
+    }
+});
+
 document.title = "Roll Dice With " + roomname;
 
 const connection = new signalR.HubConnectionBuilder()
@@ -33,6 +41,12 @@ connection.on("PublishRoll", (message) => {
     rolllist.appendChild(li);
 });
 
+connection.on("InvalidExpression", () => {
+    const errorLabel = document.getElementById("invalid-expression");
+    errorLabel.hidden = false;
+    setTimeout(() => { errorLabel.hidden = true;}, 2000)
+});
+
 start_signalr()
     .then(() => console.log("SignalR connected"));
 
@@ -45,8 +59,12 @@ async function roll(expr) {
     }
 }
 
+
+function clear_input() {
+    rollinput.value = "";
+}
 async function submit_roll() {
     const expr = rollinput.value;
     await roll(expr);
+    clear_input();
 }
-
