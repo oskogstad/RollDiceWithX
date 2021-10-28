@@ -35,15 +35,15 @@ connection.on("RoomJoined", () => {
     console.log("Joined", roomname);
 });
 
-connection.on("PublishRoll", (result) => {
-    console.log("PublishRoll", result);
+connection.on("PublishRoll", (userRoll) => {
+    console.log("PublishRoll", userRoll);
 
     const resultHTML =
-        `<span class="username">Username: ${result.username}</span>` +
-        `<span class="timestamp">, UTC: ${result.utcTimestamp}</span>` +
-        `<span class="rollresult">, Total: ${result.rollResult.total}</span>` +
-        `<span class="rollmod">, Modifier: ${result.rollResult.modifier}</span>` +
-        `<span class="rolldescription">, Rolls: (${result.rollResult.rolls})</span>`;
+        `<span class="username">Username: ${userRoll.username}</span>` +
+        `<span class="timestamp">, UTC: ${userRoll.utcTimestamp}</span>` +
+        `<span class="rollresult">, Total: ${userRoll.result.total}</span>` +
+        `<span class="rollmod">, Modifier: ${userRoll.result.modifier}</span>` +
+        `<span class="rolldescription">, Rolls: (${userRoll.result.rolls})</span>`;
 
     const li = document.createElement("li");
     li.innerHTML = resultHTML;

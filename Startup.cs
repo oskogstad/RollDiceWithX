@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using RollDiceWithX.Database;
 using RollDiceWithX.SignalR;
 
 public class Startup
@@ -17,6 +19,7 @@ public class Startup
 
     public static void ConfigureServices(IServiceCollection services)
     {
+        services.AddDbContext<RoomDatabase>();
         services.AddControllers();
         services.AddSignalR();
         services.AddSwaggerGen(c =>
@@ -25,8 +28,10 @@ public class Startup
         });
     }
 
-    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, RoomDatabase dataContext)
     {
+        dataContext.Database.Migrate();
+        
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
