@@ -63,6 +63,11 @@ connection.on("PublishRoll", (userRoll) => {
     }
 });
 
+connection.on("JoinRoomFailed", (error) => {
+    if(error === "Invalid password") {
+        console.log(error)
+    }
+});
 connection.on("InvalidExpression", () => {
     const errorLabel = document.getElementById("invalid-expression");
     errorLabel.hidden = false;

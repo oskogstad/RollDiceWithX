@@ -26,15 +26,23 @@ namespace RollDiceWithX.SignalR
                 return;
             }
 
-            if (roomResult.Error.Equals(RoomServiceError.RoomNotFound))
+            switch (roomResult.Error)
             {
-                var newRoomResult = await _roomService.CreateRoom(roomName, password);
-                if (newRoomResult.Ok)
+                case RoomServiceError.RoomNotFound:
                 {
-                    await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-                    await Clients.Caller.SendAsync("RoomJoined");
-                    return;
+                    var newRoomResult = await _roomService.CreateRoom(roomName, password);
+                    if (newRoomResult.Ok)
+                    {
+                        await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+                        await Clients.Caller.SendAsync("RoomJoined");
+                        return;
+                    }
+
+                    break;
                 }
+                case RoomServiceError.InvalidPassword:
+                    await Clients.Caller.SendAsync("JoinRoomFailed", RoomServiceError.InvalidPassword);
+                    break;
             }
 
             await Clients.Caller.SendAsync("JoinRoomFailed");
