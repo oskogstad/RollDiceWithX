@@ -1,20 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using Dicebag;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RollDiceWithX.SignalR;
+using RollDiceWithX.Models;
 
 namespace RollDiceWithX.Database
 {
-    public class RoomDatabase : DbContext
+    public class RoomDbContext : DbContext
     {
         public DbSet<Room> Rooms { get; set; }
         private string DbPath { get; set; }
 
-        public RoomDatabase()
+        public RoomDbContext()
         {
             const Environment.SpecialFolder folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
@@ -36,14 +34,5 @@ namespace RollDiceWithX.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
-    }
-
-    public class Room
-    {
-        public int Id { get; set; }
-        public string RoomName { get; set; }
-        public string HashedPassword { get; set; }
-        public string Salt { get; set; }
-        public List<UserRoll> UserRolls { get; set; }
     }
 }

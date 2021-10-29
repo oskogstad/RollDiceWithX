@@ -1,36 +1,43 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dicebag;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using RollDiceWithX.Database;
+using RollDiceWithX.Models;
+using RollDiceWithX.Services;
 
 namespace RollDiceWithX.SignalR
 {
     public class RoomHub : Hub
     {
-        public async Task JoinRoom(string roomName)
+        private readonly RoomService _roomService;
+
+        public RoomHub(RoomService roomService)
         {
-            await using var roomDatabase = new RoomDatabase();
-            var room = await roomDatabase.Rooms.SingleOrDefaultAsync(room => room.RoomName.Equals(roomName));
-
-            if (room is null)
+            _roomService = roomService;
+        }
+        
+        public async Task JoinRoom(string roomName, string password = "")
+        {
+            var roomResult = await _roomService.GetRoom(roomName, password);
+            if (roomResult.Ok)
             {
-                room = new Room
-                {
-                    RoomName = roomName,
-                    Salt = string.Empty,
-                    HashedPassword = string.Empty,
-                    UserRolls = new List<UserRoll>()
-                };
-
-                await roomDatabase.AddAsync(room);
-                await roomDatabase.SaveChangesAsync();
+                await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+                await Clients.Caller.SendAsync("RoomJoined", roomResult.Room.UserRolls);
+                return;
             }
-            
-            await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
-            await Clients.Caller.SendAsync("RoomJoined");
+
+            if (roomResult.Error.Equals(RoomServiceError.RoomNotFound))
+            {
+                var newRoomResult = await _roomService.CreateRoom(roomName, password);
+                if (newRoomResult.Ok)
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, roomName);
+                    await Clients.Caller.SendAsync("RoomJoined");
+                    return;
+                }
+            }
+
+            await Clients.Caller.SendAsync("JoinRoomFailed");
         }
         
         public async Task Roll(string roomName, string username, string expression)
@@ -53,16 +60,14 @@ namespace RollDiceWithX.SignalR
                 return;
             }
 
-            await using var roomDatabase = new RoomDatabase();
-            var room = await roomDatabase
-                .Rooms
-                .SingleOrDefaultAsync(room => room.RoomName.Equals(roomName));
+            var roomResult = await _roomService.GetRoom(roomName);
 
-            if (room is null)
+            if (!roomResult.Ok)
             {
-                await Clients.Caller.SendAsync("InvalidRoomName", roomName);
+                await Clients.Caller.SendAsync("RollFailed");
                 return;
             }
+            
             var userRoll = new UserRoll
             {
                 Result = rollResult,
@@ -70,21 +75,13 @@ namespace RollDiceWithX.SignalR
                 UtcTimestamp = utcTimestamp
             };
 
-            room.UserRolls ??= new List<UserRoll>();
-            room.UserRolls.Add(userRoll);
-            roomDatabase.Entry(room).State = EntityState.Modified;
-            var numChanges = await roomDatabase.SaveChangesAsync();
+            var addRollResult = await _roomService.AddRoll(roomResult.Room, userRoll);
+            if (!addRollResult.Ok)
+                await Clients.Caller.SendAsync("RollFailed");
             
             await Clients
                 .Group(roomName)
                 .SendAsync("PublishRoll", userRoll);
         }
-    }
-
-    public class UserRoll
-    {
-        public DiceRoller.Result Result { get; set; }
-        public string Username { get; set; }
-        public DateTime UtcTimestamp { get; set; }
     }
 }

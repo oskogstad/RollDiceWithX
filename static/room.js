@@ -31,23 +31,36 @@ const connection = new signalR.HubConnectionBuilder()
     .withAutomaticReconnect()
     .build();
 
-connection.on("RoomJoined", () => {
-    console.log("Joined", roomname);
+connection.on("RoomJoined", (rollHistory) => {
+    console.log(rollHistory);
+    if(rollHistory) {
+        rollHistory.forEach(roll => {
+            if(roll) {
+                addToRollList(roll);
+            }
+        })
+    }
+    console.log("Joined room", roomname,);
 });
 
-connection.on("PublishRoll", (userRoll) => {
-    console.log("PublishRoll", userRoll);
-
+function addToRollList(roll) {
     const resultHTML =
-        `<span class="username">Username: ${userRoll.username}</span>` +
-        `<span class="timestamp">, UTC: ${userRoll.utcTimestamp}</span>` +
-        `<span class="rollresult">, Total: ${userRoll.result.total}</span>` +
-        `<span class="rollmod">, Modifier: ${userRoll.result.modifier}</span>` +
-        `<span class="rolldescription">, Rolls: (${userRoll.result.rolls})</span>`;
+        `<span class="username">Username: ${roll.username}</span>` +
+        `<span class="timestamp">, UTC: ${roll.utcTimestamp}</span>` +
+        `<span class="rollresult">, Total: ${roll.result.total}</span>` +
+        `<span class="rollmod">, Modifier: ${roll.result.modifier}</span>` +
+        `<span class="rolldescription">, Rolls: (${roll.result.rolls})</span>`;
 
     const li = document.createElement("li");
     li.innerHTML = resultHTML;
-    rolllist.appendChild(li);
+    rolllist.appendChild(li); 
+}
+
+connection.on("PublishRoll", (userRoll) => {
+    console.log("PublishRoll", userRoll);
+    if(userRoll) {
+        addToRollList(userRoll);
+    }
 });
 
 connection.on("InvalidExpression", () => {
@@ -79,8 +92,9 @@ document.getElementById("rollform").addEventListener("submit", async (event) => 
 
 async function start_signalr() {
     try {
+        const password = "";
         await connection.start();
-        await connection.invoke("JoinRoom", roomname);
+        await connection.invoke("JoinRoom", roomname, password);
     }
     catch(err) {
         console.error(err);
