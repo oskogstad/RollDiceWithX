@@ -28,39 +28,38 @@ namespace RollDiceWithX.Services
     public class RoomService
     {
         private readonly ILogger<RoomService> _logger;
+        private readonly RoomDbContext _roomDatabase;
 
-        public RoomService(ILogger<RoomService> logger)
+        public RoomService(ILogger<RoomService> logger, RoomDbContext roomDatabase)
         {
             _logger = logger;
+            _roomDatabase = roomDatabase;
         }
         
         public async Task<RoomServiceResult> GetRoom(string roomName, string password = "")
         {
             try
             {
-                using (var roomDatabase = new RoomDbContext())
+                var room = await _roomDatabase
+                    .Rooms
+                    .SingleOrDefaultAsync(room => room.RoomName.Equals(roomName));
+
+                if (room is null)
                 {
-                    var room = await roomDatabase
-                        .Rooms
-                        .SingleOrDefaultAsync(room => room.RoomName.Equals(roomName));
-
-                    if (room is null)
-                    {
-                        return new RoomServiceResult { Error = RoomServiceError.RoomNotFound };
-                    }
-
-                    if (string.IsNullOrEmpty(room.HashedPassword))
-                    {
-                        return new RoomServiceResult { Ok = true, Room = room };
-                    }
-
-                    var passwordIsValid = PasswordHasher
-                        .ValidatePassword(room.HashedPassword, room.Salt, password);
-
-                    return passwordIsValid ? 
-                        new RoomServiceResult { Ok = true, Room = room } : 
-                        new RoomServiceResult { Error = RoomServiceError.InvalidPassword }; 
+                    return new RoomServiceResult { Error = RoomServiceError.RoomNotFound };
                 }
+
+                if (string.IsNullOrEmpty(room.HashedPassword))
+                {
+                    return new RoomServiceResult { Ok = true, Room = room };
+                }
+
+                var passwordIsValid = PasswordHasher
+                    .ValidatePassword(room.HashedPassword, room.Salt, password);
+
+                return passwordIsValid ? 
+                    new RoomServiceResult { Ok = true, Room = room } : 
+                    new RoomServiceResult { Error = RoomServiceError.InvalidPassword };
             }
             catch (Exception e)
             {
@@ -88,10 +87,8 @@ namespace RollDiceWithX.Services
                     room.HashedPassword = hashedPassword;  
                 }
             
-                using var roomDatabase = new RoomDbContext();
-            
-                await roomDatabase.AddAsync(room);
-                await roomDatabase.SaveChangesAsync();
+                await _roomDatabase.AddAsync(room);
+                await _roomDatabase.SaveChangesAsync();
 
                 return new RoomServiceResult { Ok = true, Room = room };
             }
@@ -109,9 +106,8 @@ namespace RollDiceWithX.Services
                 room.UserRolls ??= new List<UserRoll>();
                 room.UserRolls.Add(userRoll);
 
-                await using var roomDatabase = new RoomDbContext();
-                roomDatabase.Entry(room).State = EntityState.Modified;
-                await roomDatabase.SaveChangesAsync();
+                _roomDatabase.Entry(room).State = EntityState.Modified;
+                await _roomDatabase.SaveChangesAsync();
                 
                 return new RoomServiceResult { Ok = true };
             }

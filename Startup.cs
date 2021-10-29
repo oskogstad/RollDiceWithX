@@ -23,7 +23,7 @@ public class Startup
         services.AddDbContext<RoomDbContext>();
         services.AddControllers();
         services.AddSignalR();
-        services.AddSingleton<RoomService>();
+        services.AddTransient<RoomService>();
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "RollDiceWithX", Version = "v1" });
