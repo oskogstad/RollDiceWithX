@@ -4,6 +4,7 @@ import NavMenu from './components/NavMenu';
 import Lobby from './components/Lobby';
 import Counter  from './components/Counter';
 import Room from './components/Room';
+import './App.css';
 
 const App = () => {
     return (
