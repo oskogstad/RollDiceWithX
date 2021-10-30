@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container} from "react-bootstrap";
 
-const Home = () => {
+const Lobby = () => {
     return (
         <Container>
             <div>
@@ -12,4 +12,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default Lobby;
