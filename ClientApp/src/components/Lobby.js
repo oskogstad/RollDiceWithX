@@ -1,21 +1,10 @@
 import {Form, Button, Container} from "react-bootstrap";
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
+import { UseLocalStorage} from "./UseLocalStorage";
 import { useHistory } from "react-router-dom";
 
 const Lobby = () => {
-    const localStorageItemName = "nickname";
-    
-    const [nickname, setNickname] = useState(() => {
-        const storedNickname = localStorage.getItem(localStorageItemName);
-        const initialValue = JSON.parse(storedNickname);
-        
-        return initialValue;
-    });
-    
-    useEffect(() => {
-        localStorage.setItem(localStorageItemName, JSON.stringify(nickname));
-    }, [nickname]);
-    
+    const [nickname, setNickname] = UseLocalStorage("nickname", "");
     const [roomName, setRoomName] = useState();
     
     let history = useHistory();
