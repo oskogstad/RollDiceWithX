@@ -9,16 +9,10 @@ const NavMenu = () => {
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="me-auto">
                     <LinkContainer to="/">
-                        <Nav.Link>Lobby</Nav.Link> 
+                        <Nav.Link>Daisuu</Nav.Link> 
                     </LinkContainer>
                     <LinkContainer to="/about">
                         <Nav.Link>About</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/room/test">
-                        <Nav.Link>room/test</Nav.Link>
-                    </LinkContainer>
-                    <LinkContainer to="/room/another">
-                        <Nav.Link>room/another</Nav.Link>
                     </LinkContainer>
                 </Nav>
             </Navbar.Collapse>
