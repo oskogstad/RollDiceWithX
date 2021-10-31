@@ -6,6 +6,25 @@
     width: 400px;    
 }
 
-.backgroundTest {
+.backgroundTestPink {
     background-color: deeppink;
+}
+
+.backgroundTestBlue {
+    background-color: aqua;
+}
+
+.backgroundTestGreen {
+    background-color: chartreuse;
+}
+
+.rolls-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rolls-list-item {
+    padding: 0;
+    margin: 0;
 }

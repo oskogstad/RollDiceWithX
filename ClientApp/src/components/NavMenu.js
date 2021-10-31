@@ -1,7 +1,7 @@
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap'
 
-const NavMenu = () => {
+const NavMenu = ({ rooms }) => {
     return <Navbar bg="light" expand="lg">
         <Container>
             <Navbar.Brand>RollDiceWithX</Navbar.Brand>
@@ -14,7 +14,12 @@ const NavMenu = () => {
                     <LinkContainer to="/about">
                         <Nav.Link>About</Nav.Link>
                     </LinkContainer>
+                    {rooms.map((room, index) => <LinkContainer key={index} to={`/room/${room}`}>
+                                <Nav.Link>{room}</Nav.Link>
+                            </LinkContainer>
+                    )}
                 </Nav>
+
             </Navbar.Collapse>
         </Container>
     </Navbar>
