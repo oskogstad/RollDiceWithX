@@ -7,9 +7,12 @@ const Roll = ({ roll }) => {
         show: { opacity: 1 }
     }
     
+    let date = new Date(roll.utcTimestamp);
+    let timestamp = (date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes());
     return <motion.li className="rolls-list-item" variants={item} size={20}>
         <div>
-            <span>{roll.username} rolled a {roll.result.total}</span>
+            <div>{roll.username} rolled a {roll.result.total}</div>
+            <div className="rolls-list-item-timestamp">{timestamp}</div>
         </div>
     </motion.li>
     

@@ -34,7 +34,7 @@ const Room = () => {
                     setRolls([roll]);
                     return;
                 }
-                setRolls(rolls => [...rolls, roll]);
+                setRolls(rolls => [roll, ...rolls]);
             });
             
             await connection.start();
