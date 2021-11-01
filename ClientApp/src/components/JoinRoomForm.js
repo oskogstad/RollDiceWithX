@@ -15,9 +15,6 @@ const JoinRoomForm = ({ addRoom }) => {
         },
         show: {
             opacity: 1,
-            transition: {
-                duration: 1
-            }
         }
     }
     

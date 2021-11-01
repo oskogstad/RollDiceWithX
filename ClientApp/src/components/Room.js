@@ -1,9 +1,9 @@
 import {Container} from "react-bootstrap";
-import JoinRoomForm from './JoinRoomForm';
 import Rolls from "./Rolls";
 import RollInput from "./RollInput";
 import { HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
 import {useState} from "react";
+import Connecting from "./Connecting";
 
 const Room = () => {
     const [connection, setConnection] = useState();
@@ -59,7 +59,7 @@ const Room = () => {
     
     return <Container>
         {!connection ? 
-            <JoinRoomForm joinRoom={joinRoom}/> : 
+            <Connecting /> : 
             <Container>
                 <RollInput sendRoll={sendRoll}/>
                 <Rolls rolls={rolls}/>
