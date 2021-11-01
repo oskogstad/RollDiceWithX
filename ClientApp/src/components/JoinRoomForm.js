@@ -1,6 +1,6 @@
 import {Form, Button, Container} from "react-bootstrap";
 import { useState } from "react";
-import { UseLocalStorage} from "./UseLocalStorage";
+import { UseLocalStorage} from "../utils/UseLocalStorage";
 import {motion} from "framer-motion";
 import {useHistory} from "react-router-dom";
 

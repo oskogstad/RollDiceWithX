@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import NavMenu from './components/NavMenu';
-import Counter  from './components/Counter';
 import Room from './components/Room';
+import About from './components/About';
 import './App.css';
 import {useState} from "react";
 import JoinRoomForm from "./components/JoinRoomForm";
@@ -22,9 +22,9 @@ const App = () => {
       <Route exact path='/' render={() => (
           <JoinRoomForm addRoom={addRoom}/>
       )}/>
-      <Route path='/about' component={Counter} />
+      <Route path='/about' component={About} />
       {rooms.map((room, index) =>
-        <Route key={index} path={`/room/${room}`} component={Counter} />
+        <Route key={index} path={`/room/${room}`} component={Room} />
       )}
       <Route path='/room/:roomName' component={Room} />
     </Switch>
