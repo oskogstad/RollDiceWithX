@@ -26,13 +26,24 @@
 
 .rolls-list-item {
     padding: 0;
-    margin: 0 0 0.5em 0;
-    border-radius: 2em;
+    margin: 0 0 0.5rem 0;
+    border-radius: 2rem;
     background: #eaeaea;
-    width: 20em;
-    padding: 1em;
+    width: 20rem;
+    padding: 1rem;
 }
 
 .rolls-list-item-timestamp {
-    font-size: 0.8em;
+    font-size: 0.8rem;
+}
+
+.join-form-control {
+    border-radius: 0.25rem;
+    margin: 0.7rem
+}
+
+.join-form-button {
+    border-radius: 0.25rem;
+    display: inline-flex;
+    margin-left: 0.7rem;
 }

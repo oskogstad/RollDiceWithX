@@ -19,7 +19,7 @@ const Rolls = ({ rolls }) => {
         show: {
             opacity: 1,
             transition: {
-                duration: 3
+                duration: 1.5
             }
         }
     }
