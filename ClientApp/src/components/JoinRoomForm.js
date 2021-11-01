@@ -1,11 +1,13 @@
-import {Form, Button} from "react-bootstrap";
+import {Form, Button, Container} from "react-bootstrap";
 import { useState } from "react";
 import { UseLocalStorage} from "./UseLocalStorage";
 import {motion} from "framer-motion";
+import {useHistory} from "react-router-dom";
 
-const JoinRoomForm = ({ joinRoom }) => {
+const JoinRoomForm = ({ addRoom }) => {
     const [nickname, setNickname] = UseLocalStorage("nickname", "");
     const [roomName, setRoomName] = useState();
+    const history = useHistory();
     
     const formMotion = {
         hidden: {
@@ -39,33 +41,36 @@ const JoinRoomForm = ({ joinRoom }) => {
         }
     }
     
-    return <motion.div variants={formMotion} initial="hidden" animate="show">
-        <Form className="lobbyForm" onSubmit={event => {
-            event.preventDefault();
-            joinRoom(nickname, roomName);
-        }}>
-            <Form.Group>
-                <motion.div className="join-form-control" variants={controlMotion} whileHover="hover">
-                    <Form.Control value={nickname} placeholder='Name' 
-                                  onChange={event => setNickname(event.target.value)} />
-                </motion.div>
-                <motion.div className="join-form-control" variants={controlMotion} whileHover="hover">
-                    <Form.Control placeholder='Room' 
-                                  onChange={event => setRoomName(event.target.value)} />
-                </motion.div>
-            </Form.Group>
-            {nickname && roomName && (
-                <motion.div className="join-form-button" 
-                            variants={buttonMotion} 
-                            initial="hidden" 
-                            animate="show"
-                            whileHover="hover">
-                    <Button  type='submit'>Join</Button>
-                </motion.div>
-            )}
-            
-        </Form> 
-    </motion.div>
+    return <Container>
+        <motion.div variants={formMotion} initial="hidden" animate="show">
+            <Form className="lobbyForm" onSubmit={event => {
+                event.preventDefault();
+                addRoom(roomName);
+                history.push("/room/"+roomName);
+            }}>
+                <Form.Group>
+                    <motion.div className="join-form-control" variants={controlMotion} whileHover="hover">
+                        <Form.Control value={nickname} placeholder='Name'
+                                      onChange={event => setNickname(event.target.value)} />
+                    </motion.div>
+                    <motion.div className="join-form-control" variants={controlMotion} whileHover="hover">
+                        <Form.Control placeholder='Room'
+                                      onChange={event => setRoomName(event.target.value)} />
+                    </motion.div>
+                </Form.Group>
+                {nickname && roomName && (
+                    <motion.div className="join-form-button"
+                                variants={buttonMotion}
+                                initial="hidden"
+                                animate="show"
+                                whileHover="hover">
+                        <Button  type='submit'>Join</Button>
+                    </motion.div>
+                )}
+
+            </Form>
+        </motion.div>
+    </Container>
 }
 
 export default JoinRoomForm;

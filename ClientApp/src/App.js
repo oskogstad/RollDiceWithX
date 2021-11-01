@@ -4,14 +4,24 @@ import Counter  from './components/Counter';
 import Room from './components/Room';
 import './App.css';
 import {useState} from "react";
+import JoinRoomForm from "./components/JoinRoomForm";
 
 const App = () => {
-  const [rooms, setRooms] = useState(["room1", "room2", "room3"]);
+  const [rooms, setRooms] = useState([]);
+  
+  const addRoom = (newRoom) => {
+    if(rooms.includes(newRoom)) 
+      return;
+    
+    setRooms((rooms) => [...rooms, newRoom]);
+  };
   
   return <Router>
     <NavMenu rooms={rooms}/>
     <Switch>
-      <Route exact path='/' component={Room} />
+      <Route exact path='/' render={() => (
+          <JoinRoomForm addRoom={addRoom}/>
+      )}/>
       <Route path='/about' component={Counter} />
       {rooms.map((room, index) =>
         <Route key={index} path={`/room/${room}`} component={Counter} />
