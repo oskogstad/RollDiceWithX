@@ -5,7 +5,7 @@ import {useState, useEffect} from "react";
 
 const NavMenu = ({ rooms }) => {
     const [isMobile, setIsMobile] = useState(false);
-    const handleResize = () => {        console.log(window.innerWidth);
+    const handleResize = () => {
         setIsMobile(window.innerWidth < 992)};
     useEffect(() => {
         window.addEventListener("resize", handleResize)
@@ -20,9 +20,7 @@ const NavMenu = ({ rooms }) => {
             opacity: 1,
             scale: 1,
             transition: {
-                delay: .8,
                 duration: 1,
-                type: "spring",
             }
         }
     }
@@ -36,7 +34,8 @@ const NavMenu = ({ rooms }) => {
             opacity: 1,
             y: 0,
             transition: {
-                duration: 0.8
+                duration: 0.8,
+                when: "beforeChildren"
             }
         }
     }
@@ -84,7 +83,6 @@ const NavMenu = ({ rooms }) => {
                             </LinkContainer>
                         )}
                     </Nav>
-
                 </Navbar.Collapse>
             </Container>
         </Navbar> 

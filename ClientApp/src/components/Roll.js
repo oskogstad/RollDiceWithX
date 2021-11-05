@@ -2,14 +2,19 @@
 import {motion} from "framer-motion";
 
 const Roll = ({ roll }) => {
-    const item = {
+    const rollMotion = {
         hidden: { opacity: 0 },
-        show: { opacity: 1 }
+        show: {
+            opacity: 1,
+            transition: {
+                duration: 0.4
+            }
+        },
     }
     
     let date = new Date(roll.utcTimestamp);
     let timestamp = (date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes());
-    return <motion.li className="rolls-list-item" variants={item} size={20}>
+    return <motion.li className="rolls-list-item" variants={rollMotion} size={20}>
         <div>
             <div>{roll.username} rolled a {roll.result.total}</div>
             <div className="rolls-list-item-timestamp">{timestamp}</div>

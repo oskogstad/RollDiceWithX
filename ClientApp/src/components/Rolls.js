@@ -23,20 +23,24 @@ const Rolls = ({ rolls }) => {
             }
         }
     }
+
+    const style = {
+        display: "flex",
+        flexDirection: "column-reverse"
+    };
     
     return <Container>
         {!rolls || !rolls.length ? 
             <motion.h2 variants={header} initial="hidden" animate="show">Take a chance, roll the dice 🎲</motion.h2> :
             <div className="rolls-container">
-                <motion.ul className="rolls-list" 
+                <motion.ul style={style} className="rolls-list" 
                     variants={container} 
                     initial="hidden"
                     animate="show">
-                    {rolls.map((roll, index) =>
-                        <Roll key={index} roll={roll}/>
-                    )} 
+                        {rolls.map((roll, index) =>
+                            <Roll key={index} roll={roll}/>
+                        )}
                 </motion.ul>
-
             </div>
         }    
     </Container>
