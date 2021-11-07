@@ -13,7 +13,7 @@ const configureAndConnectToSignalR = async ({roomName, setRolls, rolls, setConne
     try {
         setRolls([]);
         const connection = new HubConnectionBuilder()
-            .withUrl("https://localhost:5001/roomhub")
+            .withUrl("https://dice.softis.net/roomhub")
             .configureLogging(LogLevel.Information)
             .withAutomaticReconnect()
             .build();
