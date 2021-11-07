@@ -1,4 +1,4 @@
-import {Container, Button} from "react-bootstrap";
+import {Container, Button, Alert} from "react-bootstrap";
 import Rolls from "./Rolls";
 import RollInput from "./RollInput";
 import {HubConnectionBuilder, LogLevel} from "@microsoft/signalr";
@@ -7,8 +7,9 @@ import Connecting from "./Connecting";
 import {UseLocalStorage} from "../utils/UseLocalStorage";
 import {getRandomName} from "../utils/RandomName";
 import {useParams, useHistory} from "react-router-dom";
+import {motion} from "framer-motion";
 
-const configureAndConnectToSignalR = async ({roomName, setRolls, rolls, setConnection}) => {
+const configureAndConnectToSignalR = async ({roomName, setRolls, rolls, setConnection, setInvalidRollErrorShowing}) => {
     try {
         setRolls([]);
         const connection = new HubConnectionBuilder()
@@ -31,6 +32,13 @@ const configureAndConnectToSignalR = async ({roomName, setRolls, rolls, setConne
             setRolls(rolls => [...rolls, roll]);
         });
 
+        connection.on("InvalidExpression", () => {
+            setInvalidRollErrorShowing(true);
+            setTimeout(() => {
+                setInvalidRollErrorShowing(false);
+            }, 2000);
+        });
+        
         await connection.start();
 
         const password = '';
@@ -44,6 +52,7 @@ const configureAndConnectToSignalR = async ({roomName, setRolls, rolls, setConne
 
 const Room = ({addRoom, leaveRoom}) => {
     const [connection, setConnection] = useState();
+    const [invalidRollErrorShowing, setInvalidRollErrorShowing] = useState(false);
     const [rolls, setRolls] = useState([]);
     const [nickname, setNickname] = UseLocalStorage("nickname", getRandomName());
     const { roomName } = useParams();
@@ -59,9 +68,10 @@ const Room = ({addRoom, leaveRoom}) => {
             connection.stop();
         }
         setConnection(undefined);
-        configureAndConnectToSignalR({roomName, setRolls, rolls, setConnection})
-            .then(console.log("Connected to room", roomName));
+        configureAndConnectToSignalR({roomName, setRolls, rolls, setConnection, setInvalidRollErrorShowing})
+            .then(() => console.log("Connected to room", roomName));
     }, [roomName]);
+    
     const sendRoll = async (expression) => {
         try {
             await connection.invoke("Roll", roomName, nickname, expression)
@@ -76,12 +86,42 @@ const Room = ({addRoom, leaveRoom}) => {
         history.push("/");
     };
     
+    const alertMotionHide = {
+        initial: {
+            opacity: 1
+        },
+        target: {
+            opacity: 0,
+            transition: {
+                duration: 2
+            }
+        }
+        
+    }
+    
+    const alertMotionShow = {
+        initial: {
+            opacity: 0
+        },
+        target: {
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+            }
+        }
+    }
+    
     if(!connection) 
         return <Connecting/>
     
     return <Container>
         <Container>
             <RollInput sendRoll={sendRoll}/>
+            {invalidRollErrorShowing && <motion.div variants={invalidRollErrorShowing ? alertMotionShow : alertMotionHide} initial="initial" animate="target">
+                <Alert variant="danger">
+                    Invalid roll expression!
+                </Alert>
+            </motion.div>}
             <Button onClick={LeaveRoom}>Leave room</Button>
         </Container>
         <Rolls rolls={rolls}/>

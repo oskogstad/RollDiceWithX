@@ -14,7 +14,6 @@ const RollInput = ({sendRoll}) => {
                               event => setRollExpression(event.target.value)} />
         </Form.Group>
         <Button type="submit" disabled={!rollExpression}>Roll!</Button>
-        
     </Form>
 }
 
