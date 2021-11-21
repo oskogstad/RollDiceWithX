@@ -13,7 +13,7 @@ const configureAndConnectToSignalR = async ({roomName, setRolls, rolls, setConne
     try {
         setRolls([]);
         const connection = new HubConnectionBuilder()
-            .withUrl("https://dice.softis.net/roomhub")
+            .withUrl(`https://${process.env.REACT_APP_HOST}/roomhub`)
             .configureLogging(LogLevel.Information)
             .withAutomaticReconnect()
             .build();
