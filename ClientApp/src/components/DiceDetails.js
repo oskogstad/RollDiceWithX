@@ -1,7 +1,7 @@
 const DiceDetails = ({diceType, diceRolls}) => {
     return <div>
         <span>
-            <b>{diceType}: </b> {diceRolls.join(' ')} 
+            <b>{diceType}: </b> {diceRolls.join(', ')} 
         </span>
     </div>
 }
