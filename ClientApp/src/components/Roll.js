@@ -1,4 +1,4 @@
-
+import RollDetails from "./RollDetails";
 import {motion} from "framer-motion";
 
 const Roll = ({ roll }) => {
@@ -17,6 +17,7 @@ const Roll = ({ roll }) => {
     return <motion.li className="rolls-list-item" variants={rollMotion} size={20}>
         <div>
             <div>{roll.username} rolled a {roll.result.total}</div>
+            <RollDetails rolls={roll.result.rolls}/>
             <div className="rolls-list-item-timestamp">{timestamp}</div>
         </div>
     </motion.li>
