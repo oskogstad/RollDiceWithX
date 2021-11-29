@@ -1,49 +1,49 @@
 .lobbyForm {
-    width: 400px;
+  max-width: 25rem;
 }
 
 .roll-input-form {
-    width: 400px;    
+  max-width: 25rem;
 }
 
 .backgroundTestPink {
-    background-color: deeppink;
+  background-color: deeppink;
 }
 
 .backgroundTestBlue {
-    background-color: aqua;
+  background-color: aqua;
 }
 
 .backgroundTestGreen {
-    background-color: chartreuse;
+  background-color: chartreuse;
 }
 
 .rolls-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
 }
 
 .rolls-list-item {
-    padding: 0;
-    margin: 0 0 0.5rem 0;
-    border-radius: 2rem;
-    background: #eaeaea;
-    width: 20rem;
-    padding: 1rem;
+  padding: 0;
+  margin: 0 0 0.5rem 0;
+  border-radius: 2rem;
+  background: #eaeaea;
+  width: 20rem;
+  padding: 1rem;
 }
 
 .rolls-list-item-timestamp {
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 .join-form-control {
-    border-radius: 0.25rem;
-    margin: 0.7rem
+  border-radius: 0.25rem;
+  margin: 0.7rem;
 }
 
 .join-form-button {
-    border-radius: 0.25rem;
-    display: inline-flex;
-    margin-left: 0.7rem;
+  border-radius: 0.25rem;
+  display: inline-flex;
+  margin-left: 0.7rem;
 }
