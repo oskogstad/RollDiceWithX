@@ -32,7 +32,7 @@ const Rolls = ({ rolls }) => {
     return <Container>
         {!rolls || !rolls.length ? 
             <motion.h2 variants={header} initial="hidden" animate="show">Take a chance, roll the dice 🎲</motion.h2> :
-            <div className="rolls-container">
+            <div>
                 <motion.ul style={style} className="rolls-list" 
                     variants={container} 
                     initial="hidden"

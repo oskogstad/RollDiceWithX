@@ -18,6 +18,7 @@ const Roll = ({ roll }) => {
         <div>
             <div>{roll.username} rolled a {roll.result.total}</div>
             <RollDetails rolls={roll.result.rolls}/>
+            {roll.result.modifier !== 0 && <div><b>Modifier: </b> {roll.result.modifier}</div>}
             <div className="rolls-list-item-timestamp">{timestamp}</div>
         </div>
     </motion.li>

@@ -4,7 +4,7 @@ import {useState} from "react";
 const RollInput = ({sendRoll}) => {
     const [rollExpression, setRollExpression] = useState();
     
-    return <Form className="roll-input-form backgroundTestPink" onSubmit={event => {
+    return <Form className="roll-input-form" onSubmit={event => {
         event.preventDefault();
         sendRoll(rollExpression);
     }}>
