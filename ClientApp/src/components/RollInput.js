@@ -13,7 +13,7 @@ const RollInput = ({sendRoll}) => {
                           onChange={
                               event => setRollExpression(event.target.value)} />
             </Form.Group>
-        <Button type="submit" disabled={!rollExpression}>Roll!</Button>
+        <Button className="submit-roll-button" type="submit" disabled={!rollExpression}>Roll!</Button>
     </Form>
 }
 

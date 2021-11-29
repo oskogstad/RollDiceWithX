@@ -116,13 +116,15 @@ const Room = ({addRoom, leaveRoom}) => {
     
     return <Container>
         <Container>
-            <RollInput sendRoll={sendRoll}/>
-            {invalidRollErrorShowing && <motion.div variants={invalidRollErrorShowing ? alertMotionShow : alertMotionHide} initial="initial" animate="target">
-                <Alert variant="danger">
-                    Invalid roll expression!
-                </Alert>
-            </motion.div>}
-            <Button onClick={LeaveRoom}>Leave room</Button>
+            <div className="roll-form-wrapper">
+                <RollInput sendRoll={sendRoll}/>
+                {invalidRollErrorShowing && <motion.div variants={invalidRollErrorShowing ? alertMotionShow : alertMotionHide} initial="initial" animate="target">
+                    <Alert className="invalid-roll" variant="danger">
+                        Invalid roll expression!
+                        </Alert>
+                </motion.div>}
+                <Button className="leave-room-button" onClick={LeaveRoom}>X</Button>
+            </div>
         </Container>
         <Rolls rolls={rolls}/>
     </Container>

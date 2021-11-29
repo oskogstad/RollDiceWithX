@@ -3,6 +3,7 @@
 }
 
 .roll-input-form {
+  margin-top: 0.5rem;
   max-width: 25rem;
 }
 
@@ -46,4 +47,24 @@
   border-radius: 0.25rem;
   display: inline-flex;
   margin-left: 0.7rem;
+}
+
+.roll-form-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.leave-room-button {
+  margin-top: 0.5rem;
+  max-height: 2rem;
+  margin-left: auto;
+}
+
+.invalid-roll {
+  margin-left: 0.5rem;
+}
+
+.submit-roll-button {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
